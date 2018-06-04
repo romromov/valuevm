@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="clean_build" name="valuevm-test-resource">
+
+    <property name="dir.local.workspace" value="."/>
+    <property name="dir.local.build" value="${dir.local.workspace}/build"/>
+    <property name="dir.local.lib" value="${dir.local.workspace}/lib"/>
+    <property name="dir.local.src" value="${dir.local.workspace}/src"/>
+
+
+    <target name="clean_build" depends="clean">
+        <antcall target="build"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${dir.local.build}"/>
+    </target>
+
+    <target name="build"
+            depends="build_test1"/>
+
+    <target name="build_test1">
+        <local name="main"/>
+        <local name="name"/>
+        <property name="main" value="valuevm.testresource.test1.Runner"/>
+        <property name="name" value="valuevm.testresource.test1"/>
+
+        <mkdir dir="${dir.local.build}/${name}"/>
+
+        <echo message="Compiling ${name}..."/>
+        <javac debug="true" debuglevel="source,lines,vars" includeantruntime="false" release="10"
+               srcdir="${dir.local.src}/${name}"
+               destdir="${dir.local.build}/${name}" includes="**/*.java,module-info.java">
+        </javac>
+
+        <echo message="Packing ${name}..."/>
+        <echo message="${dir.local.build}/${name}" />
+        <jar destfile="${dir.local.build}/${name}.jar" basedir="${dir.local.build}/${name}">
+            <manifest>
+                <attribute name="Main-Class" value="${main}"/>
+            </manifest>
+        </jar>
+    </target>
+</project>
